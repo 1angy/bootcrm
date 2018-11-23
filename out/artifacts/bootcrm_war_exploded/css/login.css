@@ -1,0 +1,117 @@
+@charset "utf-8";
+body{
+	margin: 0px;
+	padding: 0px;
+}
+body {
+	background: url("../images/tree.jpg")no-repeat center/cover;
+	background-attachment: fixed;
+	overflow:hidden;
+}
+/* #main-box {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background-color: rgba(0, 0, 0, .95);
+	background-image: -webkit-linear-gradient(left, transparent 0, #1b1f27 100%);
+	background-image: -o-linear-gradient(left, transparent 0, #1b1f27 100%);
+	background-image: linear-gradient(to right, transparent 0, #1b1f27 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#ff1b1f27', GradientType=1);
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	opacity: .3
+}  */
+.login-body {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	margin: auto;
+	width: 320px;
+	height: 360px;
+	border-radius: 5px;
+	background-color: rgba(38, 43, 54, .9);
+	z-index: 300;
+	padding: 20px 30px;
+}
+.login-body .login-main {
+	position: relative
+}
+.login-form {
+	margin: 0 auto;
+}
+.login-form h3 {
+	font-size: 26px;
+	font-weight: 500;
+	padding: 0;
+	margin: 40px 0px 10px 0px;
+	line-height: 30px;
+	text-align: center;
+	color: #259dab;
+}
+.login-form h5 {
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 30px;
+	text-align: center;
+	color: #259dab;
+	border-bottom: 1px solid #555;
+	padding-bottom: 10px;
+	margin: 10px 0px 20px 0px;
+}
+
+.input-group{
+	width: 100%;
+	height: 40px;
+	margin-bottom: 30px;
+	border-radius: 6px 6px 6px 6px;
+}
+
+.login-form .form-control{
+	width: 280px;
+	height: 40px;
+	float: right;
+	background-color: #fff;
+	border: none;
+	outline: none;
+	padding-left: 10px;
+	box-sizing: border-box;
+	border-radius: 0px 6px 6px 0px;
+}
+.login-form .input-group-addon{
+	display: block;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	float: left;
+	background-color: #fff;
+	border-radius: 6px 0px 0px 6px;
+}
+
+.login-form .login_btn_panel {
+	width: 100%;
+	height: 40px;
+	margin: 20px 0 10px
+}
+.login-form .btn-submit {
+	width: 320px;
+	height: 40px;
+	background-color: #08897e;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+.checktips{
+	color: #ff0000;
+	text-align: center;
+	margin-top: 5px;
+}

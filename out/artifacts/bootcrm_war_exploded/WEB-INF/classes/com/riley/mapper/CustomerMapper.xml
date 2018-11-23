@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.riley.dao.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.riley.entity.Customer">
+    <id column="cust_id" jdbcType="INTEGER" property="custId" />
+    <result column="cust_name" jdbcType="VARCHAR" property="custName" />
+    <result column="cust_user_id" jdbcType="INTEGER" property="custUserId" />
+    <result column="cust_create_id" jdbcType="INTEGER" property="custCreateId" />
+    <result column="cust_source" jdbcType="VARCHAR" property="custSource" />
+    <result column="cust_industry" jdbcType="VARCHAR" property="custIndustry" />
+    <result column="cust_level" jdbcType="VARCHAR" property="custLevel" />
+    <result column="cust_linkman" jdbcType="VARCHAR" property="custLinkman" />
+    <result column="cust_phone" jdbcType="VARCHAR" property="custPhone" />
+    <result column="cust_mobile" jdbcType="VARCHAR" property="custMobile" />
+    <result column="cust_zipcode" jdbcType="VARCHAR" property="custZipcode" />
+    <result column="cust_address" jdbcType="VARCHAR" property="custAddress" />
+    <result column="cust_createtime" jdbcType="TIMESTAMP" property="custCreatetime" />
+  </resultMap>
+  
+
+  <sql id="Base_Column_List">
+    cust_id, cust_name, cust_user_id, cust_create_id, cust_source, cust_industry, cust_level, 
+    cust_linkman, cust_phone, cust_mobile, cust_zipcode, cust_address, cust_createtime
+  </sql>
+  
+    <!--SQL片段  -->
+    <sql id="selectCustomerListWhere">
+        <where>
+	       <if test="custName != null" >
+	           cust_name like "%"#{custName}"%"
+	       </if>
+	       <if test="custSource != null" >
+	        and cust_source = #{custSource}
+	       </if>
+	       <if test="custIndustry != null" >
+	        and cust_industry = #{custIndustry}
+	       </if>
+	       <if test="custLevel != null" >
+	        and cust_level = #{custLevel}
+	       </if>
+        </where>
+    </sql>
+    
+    <!-- Test -->
+    <select id="Test" parameterType="com.riley.entity.Customer" resultType="Integer">
+    	select count(cust_id) from customer limit #{page.pages},10
+    </select>
+    
+	<!-- 查询客户列表  -->
+	<select id="selectCustomerList" resultMap="BaseResultMap">
+		SELECT
+			cust_id,
+			cust_name,
+			cust_user_id,
+			cust_create_id,
+			b.dict_item_name cust_source,
+			c.dict_item_name cust_industry,
+			d.dict_item_name cust_level,
+			cust_linkman,
+			cust_address,
+			cust_phone,
+			cust_mobile,
+			cust_createtime
+		FROM
+			customer a
+		LEFT JOIN (
+			SELECT
+				dict_id,
+				dict_item_name
+			FROM
+				base_dict
+			WHERE
+				dict_type_code = '002'
+		) b ON a.cust_source = b.dict_id
+		LEFT JOIN (
+			SELECT
+				dict_id,
+				dict_item_name
+			FROM
+				base_dict
+			WHERE
+				dict_type_code = '001'
+		) c ON a.cust_industry = c.dict_id
+		LEFT JOIN (
+			SELECT
+				dict_id,
+				dict_item_name
+			FROM
+				base_dict
+			WHERE
+				dict_type_code = '003'
+		) d ON a.cust_level = d.dict_id
+	</select>
+	
+	
+	<!-- 条件查询总数 -->
+	 <select id="selectCustomerListByCondition" resultMap="BaseResultMap" parameterType="com.riley.entity.Customer">
+		SELECT
+			cust_id,
+			cust_name,
+			cust_user_id,
+			cust_create_id,
+			b.dict_item_name cust_source,
+			c.dict_item_name cust_industry,
+			d.dict_item_name cust_level,
+			cust_linkman,
+			cust_address,
+			cust_phone,
+			cust_mobile,
+			cust_createtime
+		FROM
+			customer a
+		LEFT JOIN (
+			SELECT
+				dict_id,
+				dict_item_name
+			FROM
+				base_dict
+			WHERE
+				dict_type_code = '002'
+		) b ON a.cust_source = b.dict_id
+		LEFT JOIN (
+			SELECT
+				dict_id,
+				dict_item_name
+			FROM
+				base_dict
+			WHERE
+				dict_type_code = '001'
+		) c ON a.cust_industry = c.dict_id
+		LEFT JOIN (
+			SELECT
+				dict_id,
+				dict_item_name
+			FROM
+				base_dict
+			WHERE
+				dict_type_code = '003'
+		) d ON a.cust_level = d.dict_id
+		<include refid="selectCustomerListWhere"></include>
+	</select>
+	
+	
+	<!-- 添加客户 -->
+	<insert id="createCustomer" parameterType="com.riley.entity.Customer">
+	    insert into customer(
+	                     cust_name,
+	                     cust_user_id,
+	                     cust_create_id,
+	                     cust_source,
+	                     cust_industry,
+	                     cust_level,
+	                     cust_linkman,
+	                     cust_phone,
+	                     cust_mobile,
+	                     cust_zipcode,
+	                     cust_address,
+	                     cust_createtime
+	             )
+	             values(#{custName},
+	                    #{custUserId},
+	                    #{custCreateId},
+	                    #{custSource},
+	                    #{custIndustry},
+	                    #{custLevel},
+	                    #{custLinkman},
+	                    #{custPhone},
+	                    #{custMobile},
+	                    #{custZipcode},
+	                    #{custAddress},
+	                   	NOW()
+	            )
+	</insert>
+	
+	
+	<!-- 根据id获取客户信息 -->
+	<select id="getCustomerById" parameterType="int" 
+		resultMap="BaseResultMap">
+		    select * from customer where cust_id = #{id}
+	</select>
+	
+	<!-- 更新客户 -->
+	<update id="updateCustomer" parameterType="com.riley.entity.Customer">
+	    update customer
+	    <set>
+	        <if test="custName!=null">
+	            cust_name=#{custName},
+	        </if>
+	        <if test="custUserId!=null">
+	            cust_user_id=#{custUserId},
+	        </if>
+	        <if test="custCreateId!=null">
+	            cust_create_id=#{custCreateId},
+	        </if>
+	        <if test="custSource!=null">
+	            cust_source=#{custSource},
+	        </if>
+	        <if test="custIndustry!=null">
+	            cust_industry=#{custIndustry},
+	        </if>
+	        <if test="custLevel!=null">
+	            cust_level=#{custLevel},
+	        </if>
+	        <if test="custLinkman!=null">
+	            cust_linkman=#{custLinkman},
+	        </if>
+	        <if test="custPhone!=null">
+	            cust_phone=#{custPhone},
+	        </if>
+	        <if test="custMobile!=null">
+	            cust_mobile=#{custMobile},
+	        </if>
+	        <if test="custZipcode!=null">
+	            cust_zipcode=#{custZipcode},
+	        </if>
+	        <if test="custAddress!=null">
+	            cust_address=#{custAddress},
+	        </if>
+	        <if test="custCreatetime!=null">
+	            cust_createtime=#{custCreatetime},
+	        </if>
+	    </set>
+	    where cust_id=#{custId}
+	</update>
+	<!--  删除客户 -->
+	<delete id="deleteCustomer" parameterType="Integer">
+	    delete from customer where cust_id=#{id}
+	</delete>
+</mapper>
